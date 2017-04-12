@@ -43,15 +43,17 @@ public class RedditGrabberFragment extends Fragment {
 
     private RecyclerView mRecyclerview;
     private RedditGrabberAdapter mAdapter;
-    private List<RedditLinkItems> mList;
+    protected List<RedditLinkItems> mList;
 
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
+
+    //next+prev group
     private LinearLayout mNavLinearLayout;
 
-    private Button mNextButton;
-    private Button mPrevButton;
+    //private Button mNextButton;
+    //private Button mPrevButton;
 
     private static String subreddit;
 
@@ -60,13 +62,6 @@ public class RedditGrabberFragment extends Fragment {
     private int visibleThreshold = 5;
     int firstVisibleItem, visibleItemCount, totalItemCount;
 
-    /**
-     * Constructor
-     */
-    public RedditGrabberFragment()
-    {
-
-    }
 
     /**
      * Static factory method to initialize and setup a new fragment
@@ -75,6 +70,14 @@ public class RedditGrabberFragment extends Fragment {
     public static RedditGrabberFragment newInstance() {
         RedditGrabberFragment fragment = new RedditGrabberFragment();
         return fragment;
+    }
+
+    /**
+     * Constructor
+     */
+    public RedditGrabberFragment()
+    {
+
     }
 
     @Override
@@ -91,9 +94,9 @@ public class RedditGrabberFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_reddit_recycler_view, container, false);
         new getRedditInfo().execute();
 
-        mNavLinearLayout = (LinearLayout) v.findViewById(R.id.navigation_button);
-        mNextButton = (Button) v.findViewById(R.id.next_button);
-        mPrevButton = (Button) v.findViewById(R.id.prev_button);
+        //mNavLinearLayout = (LinearLayout) v.findViewById(R.id.navigation_button);
+        //mNextButton = (Button) v.findViewById(R.id.next_button);
+        //mPrevButton = (Button) v.findViewById(R.id.prev_button);
 
         mDrawerLayout = (DrawerLayout) v.findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(getActivity(),
@@ -102,7 +105,6 @@ public class RedditGrabberFragment extends Fragment {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                //Toast.makeText(getActivity(), "Drawer Opened", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -110,9 +112,10 @@ public class RedditGrabberFragment extends Fragment {
                 super.onDrawerClosed(drawerView);
                 new getRedditInfo().execute();
                 updateUI();
-                //Toast.makeText(getActivity(), "Drawer Close", Toast.LENGTH_SHORT).show();
+
             }
         };
+
         mDrawerLayout.addDrawerListener(mDrawerToggle);
         ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
         actionBar.setHomeButtonEnabled(true);
@@ -140,7 +143,6 @@ public class RedditGrabberFragment extends Fragment {
         mRecyclerview.setLayoutManager(mLayoutManager);
 
         mRecyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -155,9 +157,9 @@ public class RedditGrabberFragment extends Fragment {
                     Log.i(TAG, "end called");
 
                     mRecyclerview.setPadding(0, 0, 0, 150);
-                    mNavLinearLayout.setVisibility(View.VISIBLE);
+                    //mNavLinearLayout.setVisibility(View.VISIBLE);
                 } else {
-                    mNavLinearLayout.setVisibility(View.INVISIBLE);
+                    //mNavLinearLayout.setVisibility(View.INVISIBLE);
                     mRecyclerview.setPadding(0, 0, 0, 0);
                 }
             }
@@ -213,64 +215,8 @@ public class RedditGrabberFragment extends Fragment {
         }
     }
 
-    public class RedditGrabberViewHolder extends RecyclerView.ViewHolder {
-        private Button mListButton;
-
-
-        public RedditGrabberViewHolder(View itemView) {
-            super(itemView);
-            mListButton = (Button) itemView.findViewById(R.id.title_button_view);
-            mListButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), WebViewActivity.class);
-                    intent.putExtra(LINK_URL, mList.get(getAdapterPosition()).getUrl());
-                    startActivity(intent);
-                }
-            });
-        }
-
-        public void bind(String title) {
-            mListButton.setText(title);
-        }
-
-    }
-
-
-    public class RedditGrabberAdapter extends RecyclerView.Adapter<RedditGrabberViewHolder> {
-
-        private List<RedditLinkItems> mNumbers;
-
-        public RedditGrabberAdapter(List<RedditLinkItems> numbers) {
-            mNumbers = numbers;
-        }
-
-        @Override
-        public RedditGrabberViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            View view = layoutInflater.inflate(R.layout.list_reddit_items, parent, false);
-
-            return new RedditGrabberViewHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(RedditGrabberViewHolder holder, int position) {
-            holder.bind(mNumbers.get(position).getTitle());
-        }
-
-        @Override
-        public int getItemCount() {
-            return mNumbers.size();
-        }
-
-        public void updateList(List<RedditLinkItems> list) {
-            mNumbers = list;
-        }
-    }
-
     /**Get the information from reddit*/
     public class getRedditInfo extends AsyncTask<Void, Void, List<RedditLinkItems>> {
-
         @Override
         protected List<RedditLinkItems> doInBackground(Void... params) {
             if (subreddit == null) {

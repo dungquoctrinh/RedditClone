@@ -9,10 +9,11 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/my_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:scrollbars="vertical"/>
 
-    <LinearLayout
+    <!--FIXME: Fix the button allows to get more information-->
+    <!--LinearLayout
         android:id="@+id/navigation_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,8 +30,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="NEXT"/>
-    </LinearLayout>
+    </LinearLayout-->
 
+    <!--Left side menu-->
     <ListView
         android:id="@+id/left_drawer"
         android:layout_width="240dp"

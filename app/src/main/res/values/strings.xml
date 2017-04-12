@@ -3,6 +3,7 @@
     <string name="drawer_close">Close</string>
     <string name="drawer_open">Open</string>
     <string name="refresh">Refresh</string>
+    <!--TODO: Fix it to remove the /r/-->
     <string-array name="subreddit">
         <item>/r/all</item>
         <item>/r/announcements</item>
